@@ -1,0 +1,194 @@
+{
+  "info": {
+    "_postman_id": "8f805a5a-59df-4c07-b2e1-4bb2f54a8e2a",
+    "name": "Order Management System",
+    "description": "API collection for managing orders and the cron scheduler backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"John Doe\",\n  \"phoneNumber\": \"+1234567890\",\n  \"productName\": \"iPhone 15 Pro\",\n  \"amount\": 999.99,\n  \"paymentStatus\": \"PENDING\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ]
+            },
+            "description": "Creates a new order in the database. Supports optional custom idempotencyKey in body or relies on server-side time-bucketed deduplication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Orders (List & Filter)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders?status=ALL&search=&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ALL",
+                  "description": "Filter by status: ALL, PLACED, PROCESSING, READY_TO_SHIP, etc."
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by orderId, customerName, or productName"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of records per page"
+                }
+              ]
+            },
+            "description": "Lists all orders with status filtering, search terms, and pagination."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/ORD-20260718-491295",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders",
+                "ORD-20260718-491295"
+              ]
+            },
+            "description": "Fetches details of a specific order by its database ObjectId or custom orderId string, along with its full status transition audit trail."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Scheduler",
+      "item": [
+        {
+          "name": "Trigger Scheduler Run",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-scheduler-key",
+                "value": "super_secret_scheduler_key_12345",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/scheduler/run",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "scheduler",
+                "run"
+              ]
+            },
+            "description": "Triggers the order status updater task. Requires the secret key set in headers ('x-scheduler-key' or 'Authorization: Bearer <key>')."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Scheduler Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/scheduler/logs?limit=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "scheduler",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Limit of logs to retrieve"
+                }
+              ]
+            },
+            "description": "Retrieves the history logs of scheduler runs for display in the dashboard."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5001",
+      "type": "string"
+    }
+  ]
+}
