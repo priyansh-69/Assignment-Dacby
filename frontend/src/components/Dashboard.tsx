@@ -50,7 +50,10 @@ export const Dashboard: React.FC = () => {
   // Polling for Auto-Refresh (Every 10 seconds)
   useEffect(() => {
     let timer: ReturnType<typeof setInterval> | null = null;
-    if (autoRefresh) {
+    // Pause polling if a modal is open to prevent jarring UI updates mid-interaction
+    const isModalOpen = showCreateModal || selectedOrderId !== null;
+
+    if (autoRefresh && !isModalOpen) {
       timer = setInterval(() => {
         fetchOrders(true); // silent fetch that doesn't trigger loading state spinner
       }, 10000);
@@ -58,7 +61,7 @@ export const Dashboard: React.FC = () => {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [autoRefresh, statusFilter, debouncedSearch, page]);
+  }, [autoRefresh, statusFilter, debouncedSearch, page, showCreateModal, selectedOrderId]);
 
   const fetchOrders = async (silent = false) => {
     if (!silent) setLoading(true);
@@ -116,7 +119,7 @@ export const Dashboard: React.FC = () => {
       {/* Header Section */}
       <header className="dashboard-header">
         <div className="header-title-section">
-          <h1>LogiFlow Orders</h1>
+          <h1>DACBY Orders</h1>
           <p>Real-time Order Processing & Cron Status Dashboard</p>
         </div>
 
