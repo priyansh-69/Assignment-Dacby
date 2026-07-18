@@ -36,7 +36,64 @@
             },
             "description": "Creates a new order in the database. Supports optional custom idempotencyKey in body or relies on server-side time-bucketed deduplication."
           },
-          "response": []
+          "response": [
+            {
+              "name": "201 - Order Created Successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerName\": \"John Doe\",\n  \"phoneNumber\": \"+1234567890\",\n  \"productName\": \"iPhone 15 Pro\",\n  \"amount\": 999.99,\n  \"paymentStatus\": \"PENDING\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/orders",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "orders"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"orderId\": \"ORD-20260718-491295\",\n    \"customerName\": \"John Doe\",\n    \"phoneNumber\": \"+1234567890\",\n    \"productName\": \"iPhone 15 Pro\",\n    \"amount\": 999.99,\n    \"paymentStatus\": \"PENDING\",\n    \"orderStatus\": \"PLACED\",\n    \"idempotencyKey\": \"a90b4d3e8f12c7a6b5d4e3f2a1b0c9d8\",\n    \"_id\": \"669946ae1a2b3c4d5e6f7890\",\n    \"createdAt\": \"2026-07-18T08:16:14.000Z\",\n    \"updatedAt\": \"2026-07-18T08:16:14.000Z\",\n    \"__v\": 0\n  }\n}"
+            },
+            {
+              "name": "400 - Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+1234567890\",\n  \"productName\": \"iPhone 15 Pro\",\n  \"amount\": 999.99\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/orders",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "orders"]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Customer name is required and must be a valid string.\"\n}"
+            }
+          ]
         },
         {
           "name": "Get Orders (List & Filter)",
@@ -78,7 +135,56 @@
             },
             "description": "Lists all orders with status filtering, search terms, and pagination."
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 - Orders List",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/orders?status=ALL&page=1&limit=10",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "orders"],
+                  "query": [
+                    { "key": "status", "value": "ALL" },
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "10" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": true,\n  \"orders\": [\n    {\n      \"_id\": \"669946ae1a2b3c4d5e6f7890\",\n      \"orderId\": \"ORD-20260718-491295\",\n      \"customerName\": \"John Doe\",\n      \"phoneNumber\": \"+1234567890\",\n      \"productName\": \"iPhone 15 Pro\",\n      \"amount\": 999.99,\n      \"paymentStatus\": \"PENDING\",\n      \"orderStatus\": \"PLACED\",\n      \"idempotencyKey\": \"a90b4d3e8f12c7a6b5d4e3f2a1b0c9d8\",\n      \"createdAt\": \"2026-07-18T08:16:14.000Z\",\n      \"updatedAt\": \"2026-07-18T08:16:14.000Z\"\n    }\n  ],\n  \"total\": 1,\n  \"page\": 1,\n  \"pages\": 1\n}"
+            },
+            {
+              "name": "200 - Filtered by Status (PLACED)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/orders?status=PLACED&page=1&limit=10",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "orders"],
+                  "query": [
+                    { "key": "status", "value": "PLACED" },
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "10" }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": true,\n  \"orders\": [\n    {\n      \"_id\": \"669946ae1a2b3c4d5e6f7890\",\n      \"orderId\": \"ORD-20260718-491295\",\n      \"customerName\": \"John Doe\",\n      \"phoneNumber\": \"+1234567890\",\n      \"productName\": \"iPhone 15 Pro\",\n      \"amount\": 999.99,\n      \"paymentStatus\": \"PENDING\",\n      \"orderStatus\": \"PLACED\",\n      \"createdAt\": \"2026-07-18T08:16:14.000Z\",\n      \"updatedAt\": \"2026-07-18T08:16:14.000Z\"\n    }\n  ],\n  \"total\": 1,\n  \"page\": 1,\n  \"pages\": 1\n}"
+            }
+          ]
         },
         {
           "name": "Get Order Details",
@@ -99,7 +205,46 @@
             },
             "description": "Fetches details of a specific order by its database ObjectId or custom orderId string, along with its full status transition audit trail."
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 - Order with Audit History",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/orders/ORD-20260718-491295",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "orders", "ORD-20260718-491295"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"669946ae1a2b3c4d5e6f7890\",\n    \"orderId\": \"ORD-20260718-491295\",\n    \"customerName\": \"John Doe\",\n    \"phoneNumber\": \"+1234567890\",\n    \"productName\": \"iPhone 15 Pro\",\n    \"amount\": 999.99,\n    \"paymentStatus\": \"PENDING\",\n    \"orderStatus\": \"PROCESSING\",\n    \"createdAt\": \"2026-07-18T08:00:00.000Z\",\n    \"updatedAt\": \"2026-07-18T08:10:00.000Z\"\n  },\n  \"history\": [\n    {\n      \"_id\": \"669946af1a2b3c4d5e6f7891\",\n      \"orderId\": \"669946ae1a2b3c4d5e6f7890\",\n      \"fromStatus\": null,\n      \"toStatus\": \"PLACED\",\n      \"changedBy\": \"api\",\n      \"changedAt\": \"2026-07-18T08:00:00.000Z\"\n    },\n    {\n      \"_id\": \"669946b01a2b3c4d5e6f7892\",\n      \"orderId\": \"669946ae1a2b3c4d5e6f7890\",\n      \"fromStatus\": \"PLACED\",\n      \"toStatus\": \"PROCESSING\",\n      \"changedBy\": \"system_scheduler\",\n      \"changedAt\": \"2026-07-18T08:10:05.000Z\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "404 - Order Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/orders/ORD-NONEXISTENT",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "orders", "ORD-NONEXISTENT"]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Order not found.\"\n}"
+            }
+          ]
         }
       ]
     },
@@ -131,7 +276,48 @@
             },
             "description": "Triggers the order status updater task. Requires the secret key set in headers ('x-scheduler-key' or 'Authorization: Bearer <key>')."
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 - Scheduler Run Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  { "key": "x-scheduler-key", "value": "super_secret_scheduler_key_12345" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/scheduler/run",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "scheduler", "run"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": true,\n  \"summary\": {\n    \"startTime\": \"2026-07-18T08:15:00.000Z\",\n    \"endTime\": \"2026-07-18T08:15:00.042Z\",\n    \"durationMs\": 42,\n    \"status\": \"SUCCESS\",\n    \"processedCount\": 3,\n    \"updatedOrdersCount\": 2,\n    \"updatedOrders\": [\n      {\n        \"orderId\": \"669946ae1a2b3c4d5e6f7890\",\n        \"customOrderId\": \"ORD-20260718-491295\",\n        \"fromStatus\": \"PLACED\",\n        \"toStatus\": \"PROCESSING\"\n      },\n      {\n        \"orderId\": \"669946ae1a2b3c4d5e6f7891\",\n        \"customOrderId\": \"ORD-20260718-583012\",\n        \"fromStatus\": \"PROCESSING\",\n        \"toStatus\": \"READY_TO_SHIP\"\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "401 - Unauthorized (Missing/Invalid Key)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/scheduler/run",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "scheduler", "run"]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": \"Unauthorized. Invalid or missing scheduler secret key.\"\n}"
+            }
+          ]
         },
         {
           "name": "Get Scheduler Logs",
@@ -159,7 +345,28 @@
             },
             "description": "Retrieves the history logs of scheduler runs for display in the dashboard."
           },
-          "response": []
+          "response": [
+            {
+              "name": "200 - Scheduler Logs",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/scheduler/logs?limit=5",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "scheduler", "logs"],
+                  "query": [{ "key": "limit", "value": "5" }]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": [\n    {\n      \"_id\": \"669947001a2b3c4d5e6f7895\",\n      \"startTime\": \"2026-07-18T08:15:00.000Z\",\n      \"endTime\": \"2026-07-18T08:15:00.042Z\",\n      \"durationMs\": 42,\n      \"status\": \"SUCCESS\",\n      \"processedCount\": 3,\n      \"updatedOrders\": [\n        {\n          \"orderId\": \"669946ae1a2b3c4d5e6f7890\",\n          \"customOrderId\": \"ORD-20260718-491295\",\n          \"fromStatus\": \"PLACED\",\n          \"toStatus\": \"PROCESSING\"\n        }\n      ]\n    },\n    {\n      \"_id\": \"669947101a2b3c4d5e6f7896\",\n      \"startTime\": \"2026-07-18T08:10:00.000Z\",\n      \"endTime\": \"2026-07-18T08:10:00.015Z\",\n      \"durationMs\": 15,\n      \"status\": \"SUCCESS\",\n      \"processedCount\": 0,\n      \"updatedOrders\": []\n    }\n  ]\n}"
+            }
+          ]
         }
       ]
     }
