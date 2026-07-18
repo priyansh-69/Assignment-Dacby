@@ -94,6 +94,7 @@ body {
   letter-spacing: -0.025em;
   background: linear-gradient(to right, #ffffff, #a78bfa, #6366f1);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 0.25rem;
 }
@@ -267,7 +268,7 @@ input:checked + .slider:before {
 /* Main Content Workspace */
 .dashboard-workspace {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: minmax(0, 1fr) 350px;
   gap: 2rem;
 }
 
