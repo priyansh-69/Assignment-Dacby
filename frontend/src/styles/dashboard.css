@@ -267,7 +267,7 @@ input:checked + .slider:before {
 /* Main Content Workspace */
 .dashboard-workspace {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: minmax(0, 1fr) 350px;
   gap: 2rem;
 }
 
