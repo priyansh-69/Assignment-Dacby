@@ -1,10 +1,12 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load keys.env from the project root directory
+// Load keys.env or .env from the project root directory
 dotenv.config({ path: path.resolve(__dirname, '../../../keys.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 // Also load local .env if present in backend directory
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
 
 export const env = {
   PORT: parseInt(process.env.PORT || '5001', 10),
