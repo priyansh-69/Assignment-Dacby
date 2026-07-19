@@ -22,6 +22,17 @@ export interface OrdersResponse {
   error?: string;
 }
 
+export interface OrderStatsResponse {
+  success: boolean;
+  data: {
+    total: number;
+    placed: number;
+    processing: number;
+    readyToShip: number;
+  };
+  error?: string;
+}
+
 export interface OrderDetailsResponse {
   success: boolean;
   data: Order;
@@ -108,6 +119,13 @@ export class ApiClient {
       limit: limit.toString(),
     });
     return this.request<OrdersResponse>(`${API_BASE}/orders?${params.toString()}`);
+  }
+
+  /**
+   * Fetch order count statistics for dashboard cards
+   */
+  public static async getOrderStats(): Promise<OrderStatsResponse> {
+    return this.request<OrderStatsResponse>(`${API_BASE}/orders/stats`);
   }
 
   /**

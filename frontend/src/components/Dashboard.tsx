@@ -91,20 +91,10 @@ export const Dashboard: React.FC = () => {
 
   const computeMetrics = async () => {
     try {
-      // Run quick status counts by fetching status queries in parallel
-      const [placedRes, procRes, readyRes, allRes] = await Promise.all([
-        ApiClient.getOrders('PLACED', '', 1, 1),
-        ApiClient.getOrders('PROCESSING', '', 1, 1),
-        ApiClient.getOrders('READY_TO_SHIP', '', 1, 1),
-        ApiClient.getOrders('ALL', '', 1, 1),
-      ]);
-
-      setMetrics({
-        total: allRes.total,
-        placed: placedRes.total,
-        processing: procRes.total,
-        readyToShip: readyRes.total,
-      });
+      const response = await ApiClient.getOrderStats();
+      if (response.success) {
+        setMetrics(response.data);
+      }
     } catch (e) {
       console.warn('Failed to calculate stats metrics:', e);
     }
