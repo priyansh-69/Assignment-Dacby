@@ -4,6 +4,14 @@ A full-stack Order Management Application with backend APIs, a React dashboard, 
 
 ---
 
+## 🎥 Video Walkthrough & Demo
+
+[**Watch the Loom Video Walkthrough**](https://www.loom.com/share/66d515f3145443d8a3d3d74699e3f693)
+
+> This video covers the application demo, system design decisions, database choice, deduplication, race condition handling, and scalability approach.
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
