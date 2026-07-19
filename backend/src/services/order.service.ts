@@ -122,10 +122,34 @@ export class OrderService {
     if (!order) return null;
 
     const history = await OrderStatusHistory.find({ orderId: order._id }).sort({ changedAt: 1 });
-
-    return {
-      order,
-      history,
-    };
-  }
-}
+ 
+     return {
+       order,
+       history,
+     };
+   }
+ 
+   /**
+    * Retrieves order count statistics for dashboard cards.
+    */
+   public static async getOrderStats(): Promise<{
+     total: number;
+     placed: number;
+     processing: number;
+     readyToShip: number;
+   }> {
+     const [total, placed, processing, readyToShip] = await Promise.all([
+       Order.countDocuments({}),
+       Order.countDocuments({ orderStatus: 'PLACED' }),
+       Order.countDocuments({ orderStatus: 'PROCESSING' }),
+       Order.countDocuments({ orderStatus: 'READY_TO_SHIP' }),
+     ]);
+ 
+     return {
+       total,
+       placed,
+       processing,
+       readyToShip,
+     };
+   }
+ }

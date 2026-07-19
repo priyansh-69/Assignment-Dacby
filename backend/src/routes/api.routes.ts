@@ -8,6 +8,7 @@ const router = Router();
 // Order management routes
 router.post('/orders', OrderController.createOrder);
 router.get('/orders', OrderController.getOrders);
+router.get('/orders/stats', OrderController.getOrderStats);
 router.get('/orders/:id', OrderController.getOrderDetails);
 
 // Scheduler routes (runScheduler is protected by x-scheduler-key header / bearer authorization)

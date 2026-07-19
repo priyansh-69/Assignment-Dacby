@@ -89,6 +89,21 @@ export class OrderController {
   }
 
   /**
+   * Get order count metrics/statistics.
+   */
+  public static async getOrderStats(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const stats = await OrderService.getOrderStats();
+      res.status(200).json({
+        success: true,
+        data: stats,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * Get specific order details with history logs.
    */
   public static async getOrderDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
