@@ -2,7 +2,8 @@ import { Order, IOrder, OrderStatus } from '../models/Order';
 import { OrderStatusHistory } from '../models/OrderStatusHistory';
 import { SchedulerLog, ISchedulerLog } from '../models/SchedulerLog';
 import { Types } from 'mongoose';
-
+import { env } from '../config/env';
+ 
 export interface SchedulerRunResult {
   startTime: Date;
   endTime: Date;
@@ -18,7 +19,7 @@ export interface SchedulerRunResult {
   }>;
   errorMessage?: string;
 }
-
+ 
 export class SchedulerService {
   /**
    * Main scheduler execution logic.
@@ -32,13 +33,13 @@ export class SchedulerService {
       fromStatus: string;
       toStatus: string;
     }> = [];
-
+ 
     let processedCount = 0;
-
+ 
     try {
       const now = new Date();
-      const tenMinutesAgo = new Date(now.getTime() - 10 * 60 * 1000);
-      const twentyMinutesAgo = new Date(now.getTime() - 20 * 60 * 1000);
+      const tenMinutesAgo = new Date(now.getTime() - env.ORDER_PLACED_TIMEOUT_MS);
+      const twentyMinutesAgo = new Date(now.getTime() - env.ORDER_PROCESSING_TIMEOUT_MS);
 
       // 1. Fetch candidate orders
       // - Status is PLACED and updatedAt is older than 10 mins

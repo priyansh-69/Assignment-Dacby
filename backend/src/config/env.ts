@@ -13,4 +13,6 @@ export const env = {
   MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/order_management',
   SCHEDULER_SECRET_KEY: process.env.SCHEDULER_SECRET_KEY || 'super_secret_scheduler_key_12345',
   NODE_ENV: process.env.NODE_ENV || 'development',
+  ORDER_PLACED_TIMEOUT_MS: parseInt(process.env.ORDER_PLACED_TIMEOUT_MS || '600000', 10),
+  ORDER_PROCESSING_TIMEOUT_MS: parseInt(process.env.ORDER_PROCESSING_TIMEOUT_MS || '1200000', 10),
 };
