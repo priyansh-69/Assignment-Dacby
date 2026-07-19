@@ -258,7 +258,7 @@
             "header": [
               {
                 "key": "x-scheduler-key",
-                "value": "super_secret_scheduler_key_12345",
+                "value": "12345",
                 "type": "text"
               }
             ],
@@ -282,7 +282,7 @@
               "originalRequest": {
                 "method": "POST",
                 "header": [
-                  { "key": "x-scheduler-key", "value": "super_secret_scheduler_key_12345" }
+                  { "key": "x-scheduler-key", "value": "12345" }
                 ],
                 "url": {
                   "raw": "{{base_url}}/api/v1/scheduler/run",
